@@ -7,6 +7,10 @@
 git clone https://github.com/hibuz/hadoop-example
 cd hadoop-example
 ./mvnw package
+
+# Build error when docker mount after checkout from windows(crlf -> lf)
+git config core.autocrlf false
+git checkout mvnw
 ```
 
 ## Prepare input files into the distributed filesystem
