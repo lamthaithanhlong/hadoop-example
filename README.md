@@ -6,11 +6,12 @@
 ``` bash
 git clone https://github.com/hibuz/hadoop-example
 cd hadoop-example
-./mvnw package
 
-# Build error when docker mount after checkout from windows(crlf -> lf)
-git config core.autocrlf false
-git checkout mvnw
+# Run and Execute bash on docker container
+./docker.sh
+
+# Build in the docker container
+./mvnw package
 ```
 
 ## Prepare input files into the distributed filesystem
@@ -27,8 +28,10 @@ echo "Hello Hadoop Goodbye Hadoop" | hdfs dfs -put - wordcount/input/file02
 ``` bash
 # WordCount Example
 hadoop jar target/examples-0.0.1-SNAPSHOT.jar wordcount wordcount/input wordcount/output
+
 # View the output files on the distributed filesystem:
 hdfs dfs -cat wordcount/output/*
+
 # Result of the output files 
 Bye	1
 Goodbye	1
@@ -38,8 +41,10 @@ World	2
 
 # Grep Example
 hadoop jar target/examples-0.0.1-SNAPSHOT.jar grep wordcount/input output '([G-H])\w+'
+
 # View the output files on the distributed filesystem:
 hdfs dfs -cat output/*
+
 # Result of the output files 
 2	Hello
 2	Hadoop
