@@ -5,10 +5,11 @@
 ## Build
 ``` bash
 git clone https://github.com/hibuz/hadoop-example
+
 cd hadoop-example
 
 # Run and Execute bash on docker container
-./docker.sh
+./docker_up.sh
 
 # Build in the docker container
 ./mvnw package
@@ -50,3 +51,14 @@ hdfs dfs -cat output/*
 2	Hadoop
 1	Goodbye
 ```
+
+## Stops containers and removes containers, networks, and volumes
+``` bash
+./docker_down.sh -v
+
+[+] Running 3/3
+ ⠿ Container hadoop                  Removed
+ ⠿ Network example_default           Removed
+ ⠿ Volume hadoop-example_hadoop-vol  Removed
+ ```
+ 

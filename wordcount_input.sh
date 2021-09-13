@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Make the HDFS directories
 hdfs dfs -mkdir -p /user/hadoop/wordcount/input
