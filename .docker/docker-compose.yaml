@@ -2,14 +2,15 @@
 # docker exec -it hadoop bash
 version: "3.9"
 services:
+
   hadoop-dev:
     container_name: hadoop
     image: hibuz/hadoop-dev
     ports:
       - 9870:9870
-      #- 9864:9864
-      #- 8088:8088
-    #command: yarn
+      - 8088:8088
+      - 19888:19888
+    #command: yarn,historyserver
     volumes:
       - hadoop-vol:/tmp
       - .:/home/hadoop/hadoop-example:rw

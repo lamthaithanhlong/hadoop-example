@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Build src
+./mvnw package
+
 # WordCount Example
 hadoop jar target/examples-0.0.1-SNAPSHOT.jar wordcount wordcount/input wordcount/output
 
