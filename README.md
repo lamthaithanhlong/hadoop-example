@@ -52,13 +52,14 @@ hdfs dfs -cat output/*
 
 ## Modify source to double count:
 ```java
-// WordCount.java 
+// WordCount.java(reduce func)
 ...
-    word.set(itr.nextToken());
-    one.set(2);  // add this line
-    context.write(word, one);
+    for (IntWritable val : values) {
+        sum += val.get() * 2;  // modify this line
+    }
 ...
 ```
+
 ```bash
 #build and run using shell script
 ./run_example.sh
