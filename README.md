@@ -1,6 +1,4 @@
 # Hadoop maven examples
-- Docker env: https://github.com/hibuz/ubuntu-docker/tree/main/hadoop
-- Reference: https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
 
 ## Build
 ``` bash
@@ -52,13 +50,43 @@ hdfs dfs -cat output/*
 1	Goodbye
 ```
 
+## Modify source to double count:
+```java
+// WordCount.java 
+...
+    word.set(itr.nextToken());
+    one.set(2);  // add this line
+    context.write(word, one);
+...
+```
+```bash
+#build and run using shell script
+./run_example.sh
+
+...
+[INFO] BUILD SUCCESS
+...
+2022-02-27 07:43:00,199 INFO mapreduce.Job: Job job_1645946721365_0006 completed successfully
+...
+Bye     2
+Goodbye 2
+Hadoop  4
+Hello   4
+World   4
+```
+
 ## Stops containers and removes containers, networks, and volumes
 ``` bash
+exit
+
 ./docker_down.sh -v
 
 [+] Running 3/3
  ⠿ Container hadoop                  Removed
- ⠿ Network example_default           Removed
  ⠿ Volume hadoop-example_hadoop-vol  Removed
+ ⠿ Network hadoop-example_default    Removed
  ```
- 
+
+ # Reference
+- Docker env: https://github.com/hibuz/ubuntu-docker/tree/main/hadoop
+- Reference: https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
