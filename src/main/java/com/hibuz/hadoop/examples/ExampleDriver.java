@@ -21,25 +21,24 @@ package com.hibuz.hadoop.examples;
 import org.apache.hadoop.util.ProgramDriver;
 
 /**
- * A description of an example program based on its class and a 
+ * A description of an example program based on its class and a
  * human-readable description.
  */
 public class ExampleDriver {
-  
-  public static void main(String argv[]){
+
+  public static void main(String argv[]) {
     int exitCode = -1;
     ProgramDriver pgd = new ProgramDriver();
     try {
-      pgd.addClass("wordcount", WordCount.class, 
-                   "A map/reduce program that counts the words in the input files.");
-      pgd.addClass("grep", Grep.class, 
-                   "A map/reduce program that counts the matches of a regex in the input.");
+      pgd.addClass("wordcount", WordCount.class,
+          "A map/reduce program that counts the words in the input files.");
+      pgd.addClass("grep", Grep.class,
+          "A map/reduce program that counts the matches of a regex in the input.");
       exitCode = pgd.run(argv);
-    }
-    catch(Throwable e){
+    } catch (Throwable e) {
       e.printStackTrace();
     }
-    
+
     System.exit(exitCode);
   }
 }

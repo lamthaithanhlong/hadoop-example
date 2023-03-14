@@ -1,23 +1,8 @@
-/**
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.hibuz.hadoop.examples;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
@@ -36,15 +21,30 @@ public class WordCount {
 
   public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
 
-    private static final IntWritable one = new IntWritable(1);
-    private Text word = new Text();
+    private Map<String, Integer> wordCounts;
+
+    @Override
+    protected void setup(Context context) throws IOException, InterruptedException {
+      wordCounts = new HashMap<String, Integer>();
+    }
 
     @Override
     public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
       StringTokenizer itr = new StringTokenizer(value.toString());
       while (itr.hasMoreTokens()) {
-        word.set(itr.nextToken());
-        context.write(word, one);
+        String token = itr.nextToken();
+        if (wordCounts.containsKey(token)) {
+          wordCounts.put(token, wordCounts.get(token) + 1);
+        } else {
+          wordCounts.put(token, 1);
+        }
+      }
+    }
+
+    @Override
+    protected void cleanup(Context context) throws IOException, InterruptedException {
+      for (Map.Entry<String, Integer> entry : wordCounts.entrySet()) {
+        context.write(new Text(entry.getKey()), new IntWritable(entry.getValue()));
       }
     }
   }
@@ -68,7 +68,7 @@ public class WordCount {
     Configuration conf = new Configuration();
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
     if (otherArgs.length < 2) {
-      System.err.println("Usage: wordcount <in> [<in>...] <out>");
+      System.err.println("Usage: word count <in> [<in>...] <out>");
       System.exit(2);
     }
 
@@ -83,8 +83,8 @@ public class WordCount {
     job.setMapperClass(TokenizerMapper.class);
     job.setCombinerClass(IntSumReducer.class);
     job.setReducerClass(IntSumReducer.class);
-    job.setMapOutputKeyClass(Text.class); // Use this if map and reducer output class are different
-    job.setMapOutputValueClass(IntWritable.class); // Use this if map and reducer output class are different
+    job.setMapOutputKeyClass(Text.class);
+    job.setMapOutputValueClass(IntWritable.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
     FileInputFormat.addInputPath(job, new Path(args[0]));
