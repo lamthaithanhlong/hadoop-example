@@ -88,6 +88,10 @@ exit
  ⠿ Network hadoop-example_default    Removed
  ```
 
+## Run  ./main.sh linecount
+
+
+
  # Reference
 - Docker env: https://github.com/hibuz/ubuntu-docker/tree/main/hadoop
 - Reference: https://hadoop.apache.org/docs/stable/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html#Example:_WordCount_v1.0
