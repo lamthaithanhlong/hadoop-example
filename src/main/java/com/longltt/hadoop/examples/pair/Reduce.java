@@ -6,32 +6,34 @@ import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.mapreduce.Reducer;
 
-public class Reduce extends Reducer<Pair, IntWritable, Pair, DoubleWritable> {
-
-	private double total;
+public class Reduce extends Reducer<Text, MapWritable, Text, myMapWritable> {
 
 	@Override
-	protected void setup(
-			Reducer<Pair, IntWritable, Pair, DoubleWritable>.Context context)
+	protected void reduce(Text item, Iterable<MapWritable> values,
+			Reducer<Text, MapWritable, Text, myMapWritable>.Context context)
 			throws IOException, InterruptedException {
-		super.setup(context);
-		total = 0.0;
-	}
 
-	@Override
-	protected void reduce(Pair pair, Iterable<IntWritable> values,
-			Reducer<Pair, IntWritable, Pair, DoubleWritable>.Context context)
-			throws IOException, InterruptedException {
-		int s = 0;
-		for (IntWritable v : values) {
-			s += v.get();
+		MapWritable sumMap = new MapWritable();
+		double total = 0.0;
+		for (MapWritable v : values) {
+			for (Entry<Writable, Writable> entry : v.entrySet()) {
+				if (sumMap.containsKey(entry.getKey())) {
+					int t = ((IntWritable) sumMap.get(entry.getKey())).get();
+					sumMap.put(entry.getKey(), new IntWritable(t
+							+ ((IntWritable) entry.getValue()).get()));
+				} else {
+					sumMap.put(entry.getKey(), entry.getValue());
+				}
+				total += ((IntWritable) entry.getValue()).get();
+			}
 		}
 
-		if (pair.getKey2().toString().equals("*")) {
-			total = s;
-		} else {
-			context.write(pair, new DoubleWritable(s / total));
+		myMapWritable finalMap = new myMapWritable();
+		for (Entry<Writable, Writable> entry : sumMap.entrySet()) {
+			double r = ((IntWritable) entry.getValue()).get() / total;
+			DecimalFormat df = new DecimalFormat("#.###");
+			finalMap.put(entry.getKey(), new DoubleWritable(Double.valueOf(df.format(r))));
 		}
+		context.write(item, finalMap);
 	}
-
 }
