@@ -1,4 +1,4 @@
-package com.hibuz.hadoop.examples;
+package com.longltt.hadoop.examples;
 
 import java.util.Random;
 

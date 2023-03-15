@@ -26,10 +26,12 @@ public class AverageComputation {
     public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
       String line = value.toString();
       String[] fields = line.split("\\s+");
-      if (fields.length >= 2) {
+      String ip = line.split(" ")[0];
+      Integer comp = Integer.parseInt(line.split(" ")[line.split(" ").length - 1]);
+      if (fields.length >= 2 && line.matches("(\\d{1,3}\\.){3}\\d{1,3}\\s.+")) {
         try {
-          ipAddress.set(fields[0]);
-          quantity.set(Integer.parseInt(fields[fields.length - 1]));
+          ipAddress.set(ip);
+          quantity.set(comp);
           context.write(ipAddress, quantity);
         } catch (NumberFormatException e) {
           // ignore lines that do not contain an IP address and a quantity
