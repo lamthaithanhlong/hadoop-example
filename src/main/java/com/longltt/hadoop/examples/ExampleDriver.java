@@ -18,7 +18,7 @@ public class ExampleDriver {
           "count the number of lines that contain the IP address 64.242.88.10 in the input file");
       pgd.addClass("linecounte2", LineCountEx2.class,
           "count the number of lines that contain the 64.242.88.10 - - [07/Mar/2004:16:1:58 -0800] GET /twiki/bin/view/TWiki/WikiSyntax HTTP/1.1 200 7352");
-      pgd.addClass("stripe", WordCountStripe.class, "This is the example of word stripe");
+      pgd.addClass("stripe", CrystalBallStripe.class, "This is the example of word stripe");
       exitCode = pgd.run(argv);
     } catch (Throwable e) {
       e.printStackTrace();

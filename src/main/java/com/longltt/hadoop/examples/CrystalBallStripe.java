@@ -10,10 +10,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
-public class WordCountStripe extends Configured implements Tool {
+public class CrystalBallStripe extends Configured implements Tool {
 
 	public static void main(String[] args) throws Exception {
-		int res = ToolRunner.run(new WordCountStripe(), args);
+		int res = ToolRunner.run(new CrystalBallStripe(), args);
 		System.exit(res);
 	}
 
