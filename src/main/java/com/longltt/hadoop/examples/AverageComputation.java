@@ -27,14 +27,14 @@ public class AverageComputation {
       String line = value.toString();
       String[] fields = line.split("\\s+");
       String ip = line.split(" ")[0];
-      Integer comp = Integer.parseInt(line.split(" ")[line.split(" ").length - 1]);
       if (fields.length >= 2 && line.matches("(\\d{1,3}\\.){3}\\d{1,3}\\s.+")) {
         try {
+          Integer comp = Integer.parseInt(line.split(" ")[line.split(" ").length - 1]);
           ipAddress.set(ip);
           quantity.set(comp);
           context.write(ipAddress, quantity);
         } catch (NumberFormatException e) {
-          // ignore lines that do not contain an IP address and a quantity
+          // ignore lines that do not contain a valid integer
         }
       }
     }
