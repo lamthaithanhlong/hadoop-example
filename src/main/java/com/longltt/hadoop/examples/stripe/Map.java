@@ -1,4 +1,4 @@
-package com.longltt.hadoop.examples.crystalball;
+package com.longltt.hadoop.examples.stripe;
 
 import java.io.IOException;
 import java.util.HashMap;

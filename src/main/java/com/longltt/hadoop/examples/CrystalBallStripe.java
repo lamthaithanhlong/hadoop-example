@@ -10,6 +10,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 
+import com.longltt.hadoop.examples.stripe.Map;
+import com.longltt.hadoop.examples.stripe.Reduce;
+import com.longltt.hadoop.examples.stripe.myMapWritable;
+
 public class CrystalBallStripe extends Configured implements Tool {
 
 	public static void main(String[] args) throws Exception {

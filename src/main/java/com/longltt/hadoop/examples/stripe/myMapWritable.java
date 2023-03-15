@@ -1,4 +1,4 @@
-package com.longltt.hadoop.examples;
+package com.longltt.hadoop.examples.stripe;
 
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Writable;
