@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Map.Entry;
 
-import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
@@ -19,7 +18,7 @@ public class Reduce extends Reducer<Text, MapWritable, Text, myMapWritable> {
 			throws IOException, InterruptedException {
 
 		MapWritable sumMap = new MapWritable();
-		double total = 0.0;
+		int total = 0;
 		for (MapWritable v : values) {
 			for (Entry<Writable, Writable> entry : v.entrySet()) {
 				if (sumMap.containsKey(entry.getKey())) {
@@ -35,9 +34,10 @@ public class Reduce extends Reducer<Text, MapWritable, Text, myMapWritable> {
 
 		myMapWritable finalMap = new myMapWritable();
 		for (Entry<Writable, Writable> entry : sumMap.entrySet()) {
-			double r = ((IntWritable) entry.getValue()).get() / total;
+			int count = ((IntWritable) entry.getValue()).get();
+			double r = (double) count / total;
 			DecimalFormat df = new DecimalFormat("#.###");
-			finalMap.put(entry.getKey(), new DoubleWritable(Double.valueOf(df.format(r))));
+			finalMap.put(entry.getKey(), new IntWritable((int) (r * 1000)));
 		}
 		context.write(item, finalMap);
 	}
